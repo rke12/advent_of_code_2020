@@ -1,46 +1,41 @@
-const mainString;
-const mainListArray = mainString.split(',');
-
-// if Opcode = 1, pass the next 3 values in an array 
-function alertOne(numbers){
-    let valOne = getValueAtPosition(numbers[0]);
-    let valTwo = getValueAtPosition(numbers[1]);
-    setValueAtPosition(valOne + valTwo, numbers[2]);
+// if Opcode = 1 
+function alertOne(nextFour){
+    let valOne = listNumbers[nextFour[1]];
+    let valTwo = listNumbers[nextFour[2]];
+    let total = parseInt(valOne) + parseInt(valTwo);
+    listNumbers[nextFour[3]] = total.toString();
 }
 
-// if Opcode = 2, pass the next 3 values in an array 
-function alertTwo(numbers){
-    let valOne = getValueAtPosition(numbers[0]);
-    let valTwo = getValueAtPosition(numbers[1]);
-    setValueAtPosition(valOne * valTwo, numbers[2]);
+// if Opcode = 2 
+function alertTwo(nextFour){
+    let valOne = listNumbers[nextFour[1]];
+    let valTwo = listNumbers[nextFour[2]];
+    let total = parseInt(valOne) * parseInt(valTwo);
+    listNumbers[nextFour[3]] = total.toString();
 }
 
-// if Opcode = 99, return null to kill the program
-function alertNinetyNine(){
-    return false;
-}
-
-function getValueAtPosition(position){
-    return mainListArray[position];
-}
-
-function setValueAtPosition(position, value){
-    mainListArray[position] = value;
-}
-
-function main(){
-    let loopBreak = true;
-    let index = 0;
-    while(loopBreak){
-        if(mainListArray[index] == 1){
-            alertOne(mainListArray.slice(index, index+4));
-        }
-        else if(mainListArray[index] == 2){
-            alertTwo(mainListArray.slice(index, index+4));
-        }
-        else{
-            loopBreak = alertNinetyNine();
-        }
+const numbers = "1,1,1,4,99,5,6,0,99";
+let listNumbers = numbers.split(",");
+let index = 0;
+while(listNumbers.slice(index, index+4).length > 0){
+    let nextFour = listNumbers.slice(index, index+4);
+    if (nextFour[0] == '99'){
+        index = index + 1;
+    }
+    else if (nextFour[0] == '1'){
+        alertOne(nextFour);
         index = index + 4;
     }
+    else if (nextFour[0] == '2'){
+        alertTwo(nextFour);
+        index = index + 4;
+    }
+    else {
+        break;
+    }
 }
+
+// For testing print output of listNumbers at the end
+listNumbers.forEach(function(entry) {
+    console.log(entry);
+});
