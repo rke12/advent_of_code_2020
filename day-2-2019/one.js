@@ -1,41 +1,36 @@
-// if Opcode = 1 
-function alertOne(nextFour){
-    let valOne = listNumbers[nextFour[1]];
-    let valTwo = listNumbers[nextFour[2]];
-    let total = parseInt(valOne) + parseInt(valTwo);
-    listNumbers[nextFour[3]] = total.toString();
-}
+const intcode = (numbers, restore = false, seedOne = 12, seedTwo = 2) => {
+    let listNumbers = numbers.split(",").map(x => parseInt(x.trim()));
 
-// if Opcode = 2 
-function alertTwo(nextFour){
-    let valOne = listNumbers[nextFour[1]];
-    let valTwo = listNumbers[nextFour[2]];
-    let total = parseInt(valOne) * parseInt(valTwo);
-    listNumbers[nextFour[3]] = total.toString();
-}
+    if (restore){
+        listNumbers[1] = seedOne;
+        listNumbers[2] = seedTwo;
+    }
 
-const numbers = "1,1,1,4,99,5,6,0,99";
-let listNumbers = numbers.split(",");
-let index = 0;
-while(listNumbers.slice(index, index+4).length > 0){
-    let nextFour = listNumbers.slice(index, index+4);
-    if (nextFour[0] == '99'){
-        index = index + 1;
-    }
-    else if (nextFour[0] == '1'){
-        alertOne(nextFour);
-        index = index + 4;
-    }
-    else if (nextFour[0] == '2'){
-        alertTwo(nextFour);
-        index = index + 4;
-    }
-    else {
-        break;
-    }
-}
+    let index = 0;
+    let opcode = listNumbers[index];
 
-// For testing print output of listNumbers at the end
-listNumbers.forEach(function(entry) {
-    console.log(entry);
-});
+    while(opcode != 99){
+
+        opcode = listNumbers[index];
+
+        let firstPosition = listNumbers[index + 1];
+        let secondPosition = listNumbers[index + 2];
+        let finalPosition = listNumbers[index + 3];
+
+        switch (opcode) {
+            case 1: {
+                const sum = listNumbers[firstPosition] + listNumbers[secondPosition];
+                listNumbers[finalPosition] = sum;
+            }; 
+            break;
+            case 2: {
+                const product = listNumbers[firstPosition] * listNumbers[secondPosition];
+                listNumbers[finalPosition] = product;
+            }; 
+            break;
+        };
+        index += 4; 
+    }
+    return listNumbers;
+}
+module.exports = intcode;
