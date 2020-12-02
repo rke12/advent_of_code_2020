@@ -11,7 +11,8 @@ const expenseList = (expenses, target = 2020) => {
             }
         }
     }
-}
+};
+module.exports = expenseList;
 
 const fs = require("fs");
 let text = fs.readFileSync("./expenses.txt", "utf-8");
