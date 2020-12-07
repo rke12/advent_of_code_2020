@@ -8,7 +8,8 @@ function checkRegex(string, expression){
 const passport_list = (expenses) => {
     let counter = 0;
     for(let index = 0; index < expenses.length; index++){
-        expenses[index] = expenses[index].replace("\n", " ");
+        expenses[index] = expenses[index];
+        console.log(expenses[index]);
         let hgt = checkRegex(expenses[index], /hgt(?<tmp>)/);
         let ecl = checkRegex(expenses[index], /ecl(?<tmp>:)/);
         let pid = checkRegex(expenses[index], /pid(?<tmp>:)/);
@@ -25,6 +26,7 @@ const passport_list = (expenses) => {
 }
 
 const fs = require("fs");
-let text = fs.readFileSync("./passports.txt", "utf-8");
+let text = fs.readFileSync("./passports_tmp.txt", "utf-8");
 let expenses = text.split("\n\n");
+console.log(expenses)
 passport_list(expenses);
